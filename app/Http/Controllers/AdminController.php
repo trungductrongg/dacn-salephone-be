@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
@@ -17,10 +19,14 @@ class AdminController extends Controller
 
         if ($admin && $admin->admin_password === md5($admin_password)) {
             // Đăng nhập thành công
-            return response()->json(['message' => 'Login successful'], 200);
+            return response()->json(["admin_id" => $admin], 200);
         } else {
             // Đăng nhập thất bại
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => 'Tài khoản hoặc mật khẩu không đúng'], 401);
         }
+    }
+
+    public function log_out()
+    {
     }
 }
