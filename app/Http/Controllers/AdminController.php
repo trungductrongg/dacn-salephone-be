@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
-    public function dashboard(Request $request)
+    public function adminLogin(Request $request)
     {
         $admin_email = $request->input('admin_email');
         $admin_password = $request->input('admin_password');
@@ -24,9 +24,5 @@ class AdminController extends Controller
             // Đăng nhập thất bại
             return response()->json(['message' => 'Tài khoản hoặc mật khẩu không đúng'], 401);
         }
-    }
-
-    public function log_out()
-    {
     }
 }

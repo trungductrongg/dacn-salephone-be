@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/admin/login', [AdminController::class, 'dashboard']);
+Route::post('/admin/login', [AdminController::class, 'adminLogin']);
+Route::post('/admin/add-category', [CategoryProduct::class, 'add_category_product']);
