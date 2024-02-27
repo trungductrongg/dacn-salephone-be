@@ -20,5 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/admin/login', [AdminController::class, 'adminLogin']);
+Route::post('/register', [AdminController::class, 'register']);
+Route::post('/login', [AdminController::class, 'login']);
 Route::post('/admin/add-category', [CategoryProduct::class, 'add_category_product']);
