@@ -12,16 +12,33 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
+    public function adminLogin(Request $request)
+    {
+
+        $admin_email = $request->input('admin_email');
+        $admin_password = $request->input('admin_password');
+
+        $admin = DB::table('tbl_admin')->where('admin_email', $admin_email)->first();
+
+        if ($admin && $admin->admin_password === md5($admin_password)) {
+            // Đăng nhập thành công
+            return response()->json(["admin_id" => $admin], 200);
+        } else {
+            // Đăng nhập thất bại
+            return response()->json(['message' => 'Tài khoản hoặc mật khẩu không đúng'], 401);
+        }
+    }
     public function login(Request $request)
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             $token = $user->createToken('SalePhone')->accessToken;
-            return response()->json(['access_token' => $token, 'user' => $user], 200);
+            return response()->json(['access_token' => $token, 'user' => $user, 'message' => "Đăng nhập thành công"], 200);
         } else {
             return response()->json(['message' => 'Tài khoản hoặc mật khẩu không đúng'], 401);
         }
     }
+
     public function register(Request $request)
     {
         // $request->password = "DMC";

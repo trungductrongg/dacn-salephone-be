@@ -34,4 +34,10 @@ class CategoryProduct extends Controller
             return response()->json(['error' => 'Đã xảy ra lỗi khi thêm danh mục sản phẩm'], 500);
         }
     }
+
+    public function all_category_product()
+    {
+        $all_category_product = DB::table('tbl_category_product')->get();
+        return response()->json($all_category_product);
+    }
 }
