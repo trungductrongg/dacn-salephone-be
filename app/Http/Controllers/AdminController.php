@@ -20,7 +20,7 @@ class AdminController extends Controller
 
         $admin = DB::table('tbl_admin')->where('admin_email', $admin_email)->first();
 
-        if ($admin && $admin->admin_password === md5($admin_password)) {
+        if ($admin && $admin->admin_password === ($admin_password)) {
             // Đăng nhập thành công
             return response()->json(["admin_id" => $admin], 200);
         } else {
@@ -28,6 +28,9 @@ class AdminController extends Controller
             return response()->json(['message' => 'Tài khoản hoặc mật khẩu không đúng'], 401);
         }
     }
+
+
+
     public function login(Request $request)
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {

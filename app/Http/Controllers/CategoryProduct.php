@@ -9,7 +9,6 @@ class CategoryProduct extends Controller
 {
     public function add_category_product(Request $request)
     {
-        // Kiểm tra dữ liệu đầu vào
         $validatedData = $request->validate([
             'category_product_name' => 'required|string|max:255',
             'category_product_desc' => 'required|string',
@@ -17,20 +16,14 @@ class CategoryProduct extends Controller
         ]);
 
         try {
-            // Tạo một mảng dữ liệu từ dữ liệu đầu vào
             $data = [
                 'category_name' => $validatedData['category_product_name'],
                 'category_desc' => $validatedData['category_product_desc'],
                 'category_status' => $validatedData['category_product_status'],
             ];
-
-            // Thêm dữ liệu vào cơ sở dữ liệu
             DB::table('tbl_category_product')->insert($data);
-
-            // Trả về phản hồi thành công nếu mọi thứ diễn ra đúng
             return response()->json(['message' => 'Thêm danh mục sản phẩm thành công'], 200);
         } catch (\Exception $e) {
-            // Xử lý lỗi và trả về phản hồi lỗi nếu có vấn đề xảy ra
             return response()->json(['error' => 'Đã xảy ra lỗi khi thêm danh mục sản phẩm'], 500);
         }
     }
@@ -39,5 +32,47 @@ class CategoryProduct extends Controller
     {
         $all_category_product = DB::table('tbl_category_product')->get();
         return response()->json($all_category_product);
+    }
+
+    public function unactive_category_product($category_product_id)
+    {
+        DB::table('tbl_category_product')
+            ->where('category_id', $category_product_id)
+            ->update(['category_status' => 0]);
+
+        $updatedData = DB::table('tbl_category_product')
+            ->where('category_id', $category_product_id)
+            ->first();
+        return $updatedData;
+    }
+    public function active_category_product($category_product_id)
+    {
+        DB::table('tbl_category_product')
+            ->where('category_id', $category_product_id)
+            ->update(['category_status' => 1]);
+
+        $updatedData = DB::table('tbl_category_product')
+            ->where('category_id', $category_product_id)
+            ->first();
+        return $updatedData;
+    }
+
+    public function edit_category_product($category_product_id)
+    {
+        $edit_category_product = DB::table('tbl_category_product')->where('category_id', $category_product_id)->first();
+        return $edit_category_product;
+    }
+    public function update_category_product(Request $request, $category_product_id)
+    {
+        $data = array();
+        $data['category_name'] = $request->category_name;
+        $data['category_desc'] = $request->category_desc;
+        $result = DB::table('tbl_category_product')->where('category_id', $category_product_id)->update($data);
+
+        if ($result) {
+            return response()->json(['message' => 'Cập nhật danh mục sản phẩm thành công'], 200);
+        } else {
+            return response()->json(['message' => 'Không thể cập nhật danh mục sản phẩm'], 500);
+        }
     }
 }
