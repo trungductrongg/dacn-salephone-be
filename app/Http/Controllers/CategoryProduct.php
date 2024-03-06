@@ -75,4 +75,10 @@ class CategoryProduct extends Controller
             return response()->json(['message' => 'Không thể cập nhật danh mục sản phẩm'], 500);
         }
     }
+
+    public function delete_category_product($category_product_id)
+    {
+        DB::table('tbl_category_product')->where('category_id', $category_product_id)->delete();
+        return response()->json(['message' => 'Xóa danh mục sản phẩm thành công'], 200);
+    }
 }
